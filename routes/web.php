@@ -1,14 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
 
-Route::get('/', function () {
-    $_result =  DB::table('posts')->get();
-    print_r($_result, true);
-    return view('welcome', [
-        'items' => [
-            'apple', 'banana', 'tomato'
-        ],
-        'nums' => []
-    ]);
-});
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', 'WelcomeController@index');
+Route::resource('articles', 'ArticlesController');
