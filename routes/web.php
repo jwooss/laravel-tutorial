@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-//Route::get('/', 'WelcomeController@index');
-Route::get('/', function() {
+Route::get('/', 'WelcomeController@index');
+/*Route::get('/', function() {
     return redirect('login');
-});
+});*/
 
 Route::get('auth/login', function () {
     $credentials = [
@@ -36,3 +36,4 @@ Route::resource('articles', 'ArticlesController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
