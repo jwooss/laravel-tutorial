@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\User;
+use Dotenv\Validator;
+use foo\bar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,7 +19,7 @@ class ArticlesController extends Controller
     public function index()
     {
         DB::listen(function ($query) {
-           var_dump($query->sql);
+            var_dump($query->sql);
         });
         $articles = Article::latest()->with('user')->paginate(3);
 
@@ -30,7 +33,7 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        return __METHOD__ . '은 Article 컬렉션을 만들기 위한 폼을 담은 뷰를 반환합니다.';
+        return view('articles.create');
     }
 
     /**
@@ -41,7 +44,31 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {
-        return __METHOD__ . '은 사용자의 입력한 폼 데이터로 새로운 Atricle 컬렉션을 만듭니다.';
+        $rules = [
+            'title' => ['required'],
+            'content' => ['required', 'min:10'],
+        ];
+
+        $messages = [
+            'title.required' => '제목은 필수 입력',
+            'content.required' => '본문은 필수 입력',
+            'content.min' => '본문은 최소 :min 글자 이상이 필요'
+        ];
+
+        $validator = \Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                ->withInput();
+        }
+
+        $articles = \App\User::find(1)->articles()->create($request->all());
+
+        if (!$articles) {
+            return back()->with('flash_message', '글이 저장되지 않았습니다.')->withInput();
+        }
+
+        return redirect(route('articles.index'))->with('flash_message', '작성하신 글이 저장되었습니다.');
     }
 
     /**
