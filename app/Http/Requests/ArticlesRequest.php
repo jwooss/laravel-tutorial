@@ -24,8 +24,24 @@ class ArticlesRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required'],
+            'title'   => ['required'],
             'content' => ['required', 'min:10']
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'required' => ':attribute는 필수 입력 항목입니다',
+            'min'      => ':attribute는 최소 :min 글자 이상이 필요합니다.'
+        ];
+    }
+
+    public function attributed()
+    {
+        return [
+            'title'   => '제목',
+            'content' => '본문',
         ];
     }
 }

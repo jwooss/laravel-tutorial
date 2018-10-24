@@ -9,7 +9,7 @@ Route::get('/', 'WelcomeController@index');
 
 Route::get('auth/login', function () {
     $credentials = [
-        'email' => 'jaewoo@naver.com',
+        'email'    => 'jaewoo@naver.com',
         'password' => 'password'
     ];
 

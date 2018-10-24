@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
+use App\Events\ArticleCreated;
+use App\Events\ArticlesEvent;
+use App\Listeners\ArticlesEventListener;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -13,9 +17,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\Event' => [
-            'App\Listeners\EventListener',
+        ArticlesEvent::class => [
+            ArticlesEventListener::class,
         ],
+        Login::class => [
+            \App\Listeners\UsersEventListener::class
+        ]
     ];
 
     /**
@@ -27,6 +34,7 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        Event::listen(ArticleCreated::class, ArticlesEventListener::class);
+
     }
 }

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Events\ArticleCreated;
+use App\Events\ArticlesEvent;
+use App\Http\Requests\ArticlesRequest;
 use App\User;
-use Dotenv\Validator;
-use foo\bar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -42,31 +43,15 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArticlesRequest $request)
     {
-        $rules = [
-            'title' => ['required'],
-            'content' => ['required', 'min:10'],
-        ];
+        $article = User::find(1)->articles()->create($request->all());
 
-        $messages = [
-            'title.required' => '제목은 필수 입력',
-            'content.required' => '본문은 필수 입력',
-            'content.min' => '본문은 최소 :min 글자 이상이 필요'
-        ];
-
-        $validator = \Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)
-                ->withInput();
+        if (!$article) {
+            return back()->with('flash_message', '글이 저장되지 않습니다.')->withInput();
         }
 
-        $articles = \App\User::find(1)->articles()->create($request->all());
-
-        if (!$articles) {
-            return back()->with('flash_message', '글이 저장되지 않았습니다.')->withInput();
-        }
+        event(new ArticlesEvent($article));
 
         return redirect(route('articles.index'))->with('flash_message', '작성하신 글이 저장되었습니다.');
     }
