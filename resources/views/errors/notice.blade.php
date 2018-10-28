@@ -1,7 +1,11 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: jwoos
- * Date: 25/10/2018
- * Time: 10:18 PM
- */
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>라라벨</title>
+</head>
+<body>
+<h1>{{$title}}</h1>
+<p>  {{$description}}</p>
+</body>
+</html>

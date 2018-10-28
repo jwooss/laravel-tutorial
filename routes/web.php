@@ -2,6 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('markdown', function () {
+    $text =<<<EOT
+테스트
+문법
+마크다운쓰
+## 순서없는목록
+- 가나다라
+- 마바[^1]
+EOT;
+    return app(ParsedownExtra::class)->text($text);
+
+});
+
 Route::get('/', 'WelcomeController@index');
 /*Route::get('/', function() {
     return redirect('login');
