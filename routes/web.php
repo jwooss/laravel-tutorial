@@ -11,6 +11,7 @@ Route::get('markdown', function () {
 - 가나다라
 - 마바[^1]
 EOT;
+    
     return app(ParsedownExtra::class)->text($text);
 
 });
