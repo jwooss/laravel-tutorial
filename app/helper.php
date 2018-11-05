@@ -1,15 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jwoos
- * Date: 01/11/2018
- * Time: 11:20 PM
- */
-
-namespace App;
-
-
-class helper
-{
-
+if (! function_exists('markdown')) {
+    function markdown($text = null)
+    {
+        return app(ParsedownExtra::class)->text($text);
+    }
 }

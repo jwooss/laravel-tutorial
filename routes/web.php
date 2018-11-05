@@ -51,9 +51,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('docs/{file?}', function ($file = null) {
-    $text = (new App\Documentation)->get($file);
+Route::get('docs/{file?}', 'DocsController@show');
 
-    return app(ParsedownExtra::class)->text($text);
-});
+Route::get('docs/images/{image}', 'DocsController@image')
+    ->where('image', '{\pl-\pN\._~}+-img-[0-9]{2}.png');
 
